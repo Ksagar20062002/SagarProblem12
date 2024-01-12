@@ -1,0 +1,83 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Map<String, ArrayList<String>> person = new HashMap<>();
+        System.out.println("Enter the names of two persons to check for translation:");
+        String person1 = sc.nextLine();
+        String person2 = sc.nextLine();
+        person.put("person1", new ArrayList<>(List.of("Hindi", "English", "Gujarati")));
+        person.put("person2", new ArrayList<>(List.of("Hindi", "Odia")));
+        person.put("person3", new ArrayList<>(List.of("Tamil", "English")));
+        person.put("person4", new ArrayList<>(List.of("Odisa", "Spanish")));
+        person.put("person5", new ArrayList<>(List.of("Gujrati", "Tamil")));
+        person.put("person6", new ArrayList<>(List.of("Tamil", "Odisa")));
+        person.put("person7", new ArrayList<>(List.of("Telgu", "English")));
+        person.put("person8", new ArrayList<>(List.of("Telgu", "Hindi")));
+        person.put("person9", new ArrayList<>(List.of("Marathi", "Hindi")));
+        person.put("person10", new ArrayList<>(List.of("English", "Spanish")));
+
+        List<String> translators = findTranslators(person, person1, person2);
+
+        if (translators.isEmpty()) {
+            System.out.println("No need of translator");
+        } else {
+            System.out.println("Translators needed: " + translators);
+        }
+        System.out.println(person.get(person1));
+    }
+
+    private static List<String> findTranslators(Map<String, ArrayList<String>> personMap, String person1, String person2) {
+        List<String> languagesPerson1 = personMap.get(person1);
+        List<String> languagesPerson2 = personMap.get(person2);
+        System.out.println("list1 "+languagesPerson1);
+        System.out.println("list2 "+languagesPerson2);
+        
+        List<String> combinedLanguages = new ArrayList<>();
+        
+        
+        
+        for(int i = 0;i<languagesPerson1.size();i++)
+        {
+            for(int j = 0;j<languagesPerson2.size();j++)
+            {
+                if(languagesPerson1.get(i).equals(languagesPerson2.get(j)))
+                {
+                    combinedLanguages.add(languagesPerson1.get(i));
+                }
+            }
+        }
+        System.out.println("==> "+combinedLanguages);
+        if(combinedLanguages.size() !=0)
+        {
+            return new ArrayList<>();
+        }
+       
+        List<String> potentialTranslators = new ArrayList<>();
+
+        for (Map.Entry<String, ArrayList<String>> entry : personMap.entrySet()) {
+            String personName = entry.getKey();
+
+            if (!personName.equals(person1) && !personName.equals(person2)) {
+                ArrayList<String> languages = entry.getValue();
+
+                
+                if (containsAny(languages, languagesPerson1,languagesPerson2) || containsAny(languages, languagesPerson1,languagesPerson2)) {
+                    potentialTranslators.add(personName);
+                }
+            }
+        }
+
+        return potentialTranslators;
+    }
+
+    private static boolean containsAny(List<String> list1, List<String> list2,List<String> list3) {
+        for (String element : list1) {
+            if (list2.contains(element) || list3.contains(element)) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
